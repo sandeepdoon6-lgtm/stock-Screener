@@ -1,0 +1,44 @@
+import requests
+
+# Telegram
+BOT_TOKEN = "8770078207:AAEx81u3m75I2p69QStnem78L6LMSVQZNpY"
+CHAT_ID = "819994547"
+
+def send(msg):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    requests.get(url, params={"chat_id": CHAT_ID, "text": msg})
+
+# Stocks
+stocks = [
+"RELIANCE","TCS","INFY","HDFCBANK","ICICIBANK","SBIN","ITC",
+"AXISBANK","KOTAKBANK","LT","BHARTIARTL","MARUTI",
+"TATAMOTORS","ADANIPORTS","ADANIENT","JSWSTEEL"
+]
+
+msg = "🔥 SHORT SETUPS (NO API):\n\n"
+
+for stock in stocks:
+    try:
+        # Moneycontrol API (public)
+        url = f"https://priceapi.moneycontrol.com/pricefeed/nse/equitycash/{stock}"
+        data = requests.get(url).json()
+
+        price = float(data['data']['pricecurrent'])
+        open_price = float(data['data']['open'])
+        high = float(data['data']['high'])
+        low = float(data['data']['low'])
+
+        # 🔥 Logic: Open high + falling
+        if open_price >= high and price < open_price:
+
+            entry = low
+            sl = high
+            target = low - (high - low)
+
+            msg += f"🔻 {stock}\nEntry: {entry}\nSL: {sl}\nTarget: {target}\n\n"
+
+    except:
+        continue
+
+send(msg)
+print("✅ Done")
