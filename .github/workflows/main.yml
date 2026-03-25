@@ -1,8 +1,8 @@
-name: Run Screener
+name: Volume Breakout Scanner
 
 on:
   schedule:
-    - cron: '50 3 * * 1-5'
+    - cron: '50 3 * * 1-5'   # 9:20 AM IST
   workflow_dispatch:
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -20,5 +20,5 @@ jobs:
       - name: Install libs
         run: pip install kiteconnect requests
 
-      - name: Run script
+      - name: Run Screener
         run: python screener.py
